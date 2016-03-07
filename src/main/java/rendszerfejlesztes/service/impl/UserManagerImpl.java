@@ -1,25 +1,36 @@
 package rendszerfejlesztes.service.impl;
 
-import org.glassfish.jersey.client.ClientConfig;
-import org.glassfish.jersey.jackson.JacksonFeature;
 import rendszerfejlesztes.modell.User;
+import rendszerfejlesztes.modell.exceptions.UserAlreadyExistsException;
 import rendszerfejlesztes.service.UserManager;
 
-import javax.ws.rs.client.*;
+import javax.ws.rs.client.Entity;
+import javax.ws.rs.client.Invocation;
+import javax.ws.rs.client.WebTarget;
 import javax.ws.rs.core.MediaType;
 import javax.ws.rs.core.Response;
+import java.util.List;
 
-public class UserManagerImpl implements UserManager {
+public class UserManagerImpl extends BaseManager implements UserManager {
 
-    public void create(User user) {
-        Client client = ClientBuilder.newClient(new ClientConfig().register( JacksonFeature.class ));
-        WebTarget webTarget = client.target("http://localhost:8080/veszpremfeszt/api").path("myresource");
+    public User create(User user) throws UserAlreadyExistsException {
+        WebTarget webTarget = getClient().target( getBaseTargetUrl() ).path("user");
 
         Invocation.Builder invocationBuilder = webTarget.request(MediaType.APPLICATION_JSON_TYPE);
-        Response response = invocationBuilder.post(Entity.entity(user, MediaType.APPLICATION_JSON));
-
+        Response response = invocationBuilder.put(Entity.entity(user, MediaType.APPLICATION_JSON));
         User created = response.readEntity(User.class);
-        System.out.println("Created on server: " + created);
+
+        return created;
+    }
+
+    public User login(String email, String pswd) {
+        WebTarget webTarget = getClient().target( getBaseTargetUrl() ).path("user").path(email).path(pswd);
+        User created = webTarget.request().get(User.class);
+        return created;
+    }
+
+    public List<User> getAllUser() {
+        return null;
     }
 
 }

@@ -1,26 +1,58 @@
 package rendszerfejlesztes.modell;
 
+import rendszerfejlesztes.Constants;
+
+import javax.xml.bind.annotation.XmlAccessType;
+import javax.xml.bind.annotation.XmlAccessorType;
+import javax.xml.bind.annotation.XmlRootElement;
+
+@XmlAccessorType(XmlAccessType.FIELD)
+@XmlRootElement
 public class User {
 
     private Integer id;
-    private String user;
+    private String name;
+    private String email;
     private String password;
+    private Integer privilage;
 
     public User() {
 
     }
 
-    public User(String user, String password) {
-        this.user = user;
+    public User(String name, String email, String password) {
+        this(name, email, password, Constants.USER_PRIVILAGE_ID);
+    }
+
+    public User(String name, String email, String password, Integer privilage) {
+        this.name = name;
+        this.email = email;
         this.password = password;
+        this.privilage = privilage;
     }
 
-    public String getUser() {
-        return user;
+    public Integer getId() {
+        return id;
     }
 
-    public void setUser(String user) {
-        this.user = user;
+    public void setId(Integer id) {
+        this.id = id;
+    }
+
+    public String getName() {
+        return name;
+    }
+
+    public void setName(String name) {
+        this.name = name;
+    }
+
+    public String getEmail() {
+        return email;
+    }
+
+    public void setEmail(String email) {
+        this.email = email;
     }
 
     public String getPassword() {
@@ -31,12 +63,22 @@ public class User {
         this.password = password;
     }
 
+    public Integer getPrivilage() {
+        return privilage;
+    }
+
+    public void setPrivilage(Integer privilage) {
+        this.privilage = privilage;
+    }
+
     @Override
     public String toString() {
         return "User{" +
                 "id=" + id +
-                ", user='" + user + '\'' +
+                ", name='" + name + '\'' +
+                ", email='" + email + '\'' +
                 ", password='" + password + '\'' +
+                ", privilage=" + privilage +
                 '}';
     }
 }
