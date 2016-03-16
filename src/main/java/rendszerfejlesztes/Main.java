@@ -122,13 +122,13 @@ public class Main {
                 System.out.println("\t" + (i+1) + " - " + events.get(i).getName() + " ["+ Constants.DATE_FORMAT.format(events.get(i).getStart()) +"] *** Eloado: " + events.get(i).getPerformer().getName() + " *** Helyszin: " + events.get(i).getLocation().getName());
             }
 
-            System.out.println("Mueletek: (M)egtekint (V)issza");
+            System.out.println("Muveletek: (M)egtekint (V)issza");
             System.out.print("Valasztott muvelet: ");
             String action = Util.readStringFromCmd();
             if( action.toLowerCase().equals("m") ) {
                 System.out.print("Eloadas sorszama: ");
                 int nth = Util.readIntFromCmd();
-                showEvent( events.get(nth) );
+                showEvent( events.get(nth-1) );
             } else if( action.toLowerCase().equals("v") ) {
                 return;
             }
@@ -156,6 +156,9 @@ public class Main {
 
     private void handleLoggedBrowser(String selected) {
         switch (selected.toLowerCase()) {
+            case "1":
+                searchEvent();
+                break;
             case "0":
                 printByeMessage();
                 break;
@@ -175,12 +178,22 @@ public class Main {
 
     private void printAdminMenu() {
         System.out.println("1.\tProgamok kozotti kereses");
+        System.out.println("2.\tFelhasznalok listazasa");
         System.out.println("X.\tKijelentkezes");
         System.out.println("0.\tKilepes");
     }
 
     private void handleAdminBrowser(String selected) {
         switch (selected) {
+            case "1":
+                searchEvent();
+                break;
+            case "2":
+                listUsers();
+                break;
+            case "x":
+                logout();
+                break;
             case "0":
                 printByeMessage();
                 break;
@@ -200,6 +213,14 @@ public class Main {
         System.out.println("**********************************************************************");
         System.out.println("                                Viszlat!                              ");
         System.exit(0);
+    }
+
+    private void listUsers(){
+        List<User> users = userManager.getAllUser();
+        for(User usr : users){
+            System.out.println(usr.toNiceString());
+        }
+
     }
 
     public static void main(String[] args) {

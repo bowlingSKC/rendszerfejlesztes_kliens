@@ -71,8 +71,20 @@ public class User {
         this.privilage = privilage;
     }
 
+    public String toNiceString() {
+        if(this .privilage == 1){
+            return  "Name: " + name +
+                    " Email: " + email +
+                    " Privilage: user";
+        }else{
+            return  "Name: " + name +
+                    " Email: " + email +
+                    " Privilage: admin";
+        }
+    }
+
     @Override
-    public String toString() {
+     public String toString() {
         return "User{" +
                 "id=" + id +
                 ", name='" + name + '\'' +
