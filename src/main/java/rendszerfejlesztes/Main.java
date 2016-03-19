@@ -1,22 +1,22 @@
 package rendszerfejlesztes;
 
-import com.sun.xml.internal.bind.v2.runtime.reflect.opt.Const;
-import rendszerfejlesztes.modell.Event;
-import rendszerfejlesztes.modell.Location;
-import rendszerfejlesztes.modell.Performer;
-import rendszerfejlesztes.modell.User;
+import rendszerfejlesztes.modell.*;
 import rendszerfejlesztes.service.EventManager;
+import rendszerfejlesztes.service.TicketManager;
 import rendszerfejlesztes.service.UserManager;
 import rendszerfejlesztes.service.impl.EventManagerImpl;
+import rendszerfejlesztes.service.impl.TicketManagerImpl;
 import rendszerfejlesztes.service.impl.UserManagerImpl;
 
 import java.io.IOException;
+import java.util.Date;
 import java.util.List;
 
 public class Main {
 
     private static final EventManager eventManager = new EventManagerImpl();
     private static final UserManager userManager = new UserManagerImpl();
+    private static final TicketManager ticketManager = new TicketManagerImpl();
 
     private User loggedUser;
 
@@ -146,10 +146,47 @@ public class Main {
         System.out.println("Jegyar:         " + event.getPrice());
         System.out.println("Leiras:");
         System.out.println(event.getDescription());
+        System.out.println("\n(F)oglalas\t(V)issza");
+
+        try {
+            String action = Util.readStringFromCmd().toLowerCase();
+            if(action.equals("f")) {
+
+                System.out.println(" ***  Szinpad  *** ");
+                for(int i = 0; i < event.getSectorList().size(); i++) {
+                    System.out.println((i+1) + ". szektor");
+                }
+
+                System.out.print("Melyik szektorba szeretne jegyet? ");
+                int selectedSector = Util.readIntFromCmd();
+
+                if( event.isSeats() ) {
+                    System.out.println("ezt kesobb ...");
+                } else {
+                    Ticket ticket = new Ticket();
+                    ticket.setSector( event.getSectorList().get(selectedSector-1) );
+                    ticket.setBookedTime(new Date());
+                    ticket.setPaid(false);
+                    ticket.setStatus(2);
+                    ticket.setUser(loggedUser);
+
+                    Ticket db = ticketManager.bookTicket(loggedUser, ticket);
+                    if( db != null ) {
+                        System.out.println("Sikeresen lefoglalta a jegyet!");
+                        loggedUser.getTickets().add(db);
+                    }
+                }
+
+            }
+        } catch (IOException e) {
+            e.printStackTrace();
+        }
+
     }
 
     private void printLoggedMenu() {
         System.out.println("1.\tProgamok kozotti kereses");
+        System.out.println("2.\tJegyeim");
         System.out.println("X.\tKijelentkezes");
         System.out.println("0.\tKilepes");
     }
@@ -162,12 +199,36 @@ public class Main {
             case "0":
                 printByeMessage();
                 break;
+            case "2":
+                showMyTickets();
+                break;
             case "x":
                 logout();
                 break;
             default:
                 System.out.println("Nincs ilyen menupont!");
         }
+    }
+
+    private void showMyTickets() {
+        List<Ticket> tickets = ticketManager.getTicketByUser(loggedUser);
+        for(int i = 0; i < tickets.size(); i++) {
+            Updater.updateTicket(tickets.get(i));
+            System.out.println( (i+1) + ". " + tickets.get(i).getSector().getEvent().getName() + " - " +
+                    tickets.get(i).getSector().getEvent().getStart() );
+        }
+        System.out.println("(M)egtekint\t(V)issza");
+        try {
+            String response = Util.readStringFromCmd();
+            if( response.toLowerCase().equals("m") ) {
+                System.out.println("Jegy szama: ");
+                int selected = Util.readIntFromCmd();
+                System.out.println( tickets.get(selected - 1) );
+            }
+        } catch (IOException e) {
+            e.printStackTrace();
+        }
+
     }
 
     private void logout() {
@@ -179,6 +240,7 @@ public class Main {
     private void printAdminMenu() {
         System.out.println("1.\tProgamok kozotti kereses");
         System.out.println("2.\tFelhasznalok listazasa");
+        System.out.println("3.\tFelhasznalok kozotti kereses");
         System.out.println("X.\tKijelentkezes");
         System.out.println("0.\tKilepes");
     }
@@ -191,6 +253,9 @@ public class Main {
             case "2":
                 listUsers();
                 break;
+            case "3":
+                searchUser();
+                break;
             case "x":
                 logout();
                 break;
@@ -199,6 +264,23 @@ public class Main {
                 break;
             default:
                 System.out.println("Nincs ilyen menupont!");
+        }
+    }
+
+    private void searchUser() {
+        try {
+            User user = new User();
+            System.out.print("Nev:      ");
+            user.setName( Util.readStringFromCmd() );
+            System.out.print("E-mail:   ");
+            user.setEmail( Util.readStringFromCmd() );
+
+            List<User> users = userManager.searchUser(user);
+            for( User u : users ) {
+                System.out.println(u);
+            }
+        } catch (Exception ex) {
+            ex.printStackTrace();
         }
     }
 

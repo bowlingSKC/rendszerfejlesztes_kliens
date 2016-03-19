@@ -10,4 +10,7 @@ public interface Constants {
 
     DateFormat DATE_FORMAT = new SimpleDateFormat("MM-dd hh:mm:ss");     // dátumok formázása
 
+    int TICKET_OPTIONAL = 1;
+    int TICKET_BOOKED = 2;
+
 }

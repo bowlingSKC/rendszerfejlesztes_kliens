@@ -37,4 +37,13 @@ public class UserManagerImpl extends BaseManager implements UserManager {
         return users;
     }
 
+    @Override
+    public List<User> searchUser(User user) {
+        GenericType<List<User>> wrapper = new GenericType<List<User>>() {};
+        Response post = getClient().target(getBaseTargetUrl()).path("user").path("search").request().post(Entity.entity(user, MediaType.APPLICATION_JSON));
+
+        List<User> users = post.readEntity(wrapper);
+        return users;
+    }
+
 }

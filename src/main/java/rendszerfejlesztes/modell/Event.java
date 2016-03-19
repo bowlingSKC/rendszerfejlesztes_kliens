@@ -1,6 +1,7 @@
 package rendszerfejlesztes.modell;
 
 import java.util.Date;
+import java.util.List;
 
 public class Event {
 
@@ -12,6 +13,8 @@ public class Event {
     private Integer price;
     private Location location;
     private Performer performer;
+    private List<Sector> sectorList;
+    private boolean seats;
 
     public Event() {
     }
@@ -86,6 +89,22 @@ public class Event {
 
     public void setPerformer(Performer performer) {
         this.performer = performer;
+    }
+
+    public List<Sector> getSectorList() {
+        return sectorList;
+    }
+
+    public void setSectorList(List<Sector> sectorList) {
+        this.sectorList = sectorList;
+    }
+
+    public boolean isSeats() {
+        return seats;
+    }
+
+    public void setSeats(boolean seats) {
+        this.seats = seats;
     }
 
     @Override

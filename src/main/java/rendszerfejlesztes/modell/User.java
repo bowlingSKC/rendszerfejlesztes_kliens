@@ -5,6 +5,7 @@ import rendszerfejlesztes.Constants;
 import javax.xml.bind.annotation.XmlAccessType;
 import javax.xml.bind.annotation.XmlAccessorType;
 import javax.xml.bind.annotation.XmlRootElement;
+import java.util.List;
 
 @XmlAccessorType(XmlAccessType.FIELD)
 @XmlRootElement
@@ -15,6 +16,7 @@ public class User {
     private String email;
     private String password;
     private Integer privilage;
+    private List<Ticket> tickets;
 
     public User() {
 
@@ -69,6 +71,14 @@ public class User {
 
     public void setPrivilage(Integer privilage) {
         this.privilage = privilage;
+    }
+
+    public List<Ticket> getTickets() {
+        return tickets;
+    }
+
+    public void setTickets(List<Ticket> tickets) {
+        this.tickets = tickets;
     }
 
     public String toNiceString() {

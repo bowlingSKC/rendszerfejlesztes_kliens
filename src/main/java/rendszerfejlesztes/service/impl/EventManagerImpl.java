@@ -2,6 +2,7 @@ package rendszerfejlesztes.service.impl;
 
 import rendszerfejlesztes.modell.Event;
 import rendszerfejlesztes.modell.Location;
+import rendszerfejlesztes.modell.Sector;
 import rendszerfejlesztes.service.EventManager;
 
 import javax.ws.rs.client.Entity;
@@ -36,5 +37,16 @@ public class EventManagerImpl extends BaseManager implements EventManager {
         GenericType<List<Location>> wrapper = new GenericType<List<Location>>() {};
         List<Location> locations = webTarget.request().get(wrapper);
         return locations;
+    }
+
+    @Override
+    public Event getEventBySector(Sector sector) {
+        WebTarget webTarget = getClient().target( getBaseTargetUrl() ).path("event").path("sectors").path("bysector");
+
+        Invocation.Builder invocationBuilder = webTarget.request(MediaType.APPLICATION_JSON_TYPE);
+        Response response = invocationBuilder.post(Entity.entity(sector, MediaType.APPLICATION_JSON));
+        Event event = response.readEntity(Event.class);
+
+        return event;
     }
 }

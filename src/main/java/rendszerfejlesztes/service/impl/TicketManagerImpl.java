@@ -1,0 +1,50 @@
+package rendszerfejlesztes.service.impl;
+
+import org.codehaus.jackson.map.ObjectMapper;
+import rendszerfejlesztes.modell.Sector;
+import rendszerfejlesztes.modell.Ticket;
+import rendszerfejlesztes.modell.User;
+import rendszerfejlesztes.modell.wrappers.BookingWrapper;
+import rendszerfejlesztes.service.TicketManager;
+
+import javax.ws.rs.client.Entity;
+import javax.ws.rs.client.Invocation;
+import javax.ws.rs.client.WebTarget;
+import javax.ws.rs.core.GenericType;
+import javax.ws.rs.core.MediaType;
+import javax.ws.rs.core.Response;
+import java.io.IOException;
+import java.util.List;
+
+public class TicketManagerImpl extends BaseManager implements TicketManager {
+
+    @Override
+    public List<Ticket> getTicketByUser(User user) {
+        Response response = getClient().target( getBaseTargetUrl() ).path("booking").request().post(Entity.entity(user, MediaType.APPLICATION_JSON));
+        GenericType<List<Ticket>> wrapper = new GenericType<List<Ticket>>() {};
+        List<Ticket> events = response.readEntity(wrapper);
+        return events;
+    }
+
+    @Override
+    public Sector getSectorByTicket(Ticket ticket) {
+        WebTarget webTarget = getClient().target( getBaseTargetUrl() ).path("booking").path("sectors");
+        Invocation.Builder invocationBuilder = webTarget.request(MediaType.APPLICATION_JSON_TYPE);
+        Response response = invocationBuilder.post(Entity.entity(ticket, MediaType.APPLICATION_JSON));
+        Sector sector = response.readEntity(Sector.class);
+        return sector;
+    }
+
+    @Override
+    public Ticket bookTicket(User user, Ticket ticket) {
+
+        WebTarget webTarget = getClient().target( getBaseTargetUrl() ).path("booking").path("book").path(String.valueOf(user.getId())).path(String.valueOf(ticket.getSector().getId()));
+        Invocation.Builder invocationBuilder = webTarget.request(MediaType.APPLICATION_JSON_TYPE);
+        Response response = invocationBuilder.put(Entity.entity(ticket, MediaType.APPLICATION_JSON));
+        if( response.getStatus() != 200 ) {
+            throw new RuntimeException("Nem sikerult a mentes szerver oldalon!");
+        }
+        return response.readEntity(Ticket.class);
+    }
+
+}
