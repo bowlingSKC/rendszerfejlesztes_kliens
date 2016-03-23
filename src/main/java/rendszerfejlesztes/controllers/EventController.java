@@ -99,13 +99,13 @@ public class EventController {
             ticket.setStatus(2);
             ticket.setUser(Main.getLoggedUser());
 
-            /*
-            Ticket db = ticketManager.bookTicket(Main.getLoggedUser(), ticket);
+
+            Ticket db = Main.getTicketManager().bookTicket(Main.getLoggedUser(), ticket);
             if( db != null ) {
                 System.out.println("Sikeresen lefoglalta a jegyet!");
-                loggedUser.getTickets().add(db);
+                Main.getLoggedUser().getTickets().add(db);
             }
-            */
+
         }
     }
 

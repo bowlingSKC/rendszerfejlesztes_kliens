@@ -14,4 +14,6 @@ public interface TicketManager {
 
     Ticket bookTicket(User user, Ticket ticket);
 
+    boolean removeTickets(Ticket ticket);
+
 }

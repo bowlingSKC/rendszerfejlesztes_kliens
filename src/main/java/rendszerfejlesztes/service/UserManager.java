@@ -11,5 +11,6 @@ public interface UserManager {
     User login(String email, String pswd);
     List<User> getAllUser();
     List<User> searchUser(User user);
+    //User updateUser(User user);
 
 }

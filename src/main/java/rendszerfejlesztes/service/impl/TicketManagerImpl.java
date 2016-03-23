@@ -47,4 +47,17 @@ public class TicketManagerImpl extends BaseManager implements TicketManager {
         return response.readEntity(Ticket.class);
     }
 
+    @Override
+    public boolean removeTickets(Ticket ticket){
+        WebTarget webTarget = getClient().target(getBaseTargetUrl()).path("booking").path(String.valueOf(ticket.getId()));
+        Response response = webTarget.request().accept(MediaType.APPLICATION_JSON_TYPE).delete();
+        //WebTarget webTarget = getClient().target(getBaseTargetUrl()).path("booking").path("delete");
+        //Invocation.Builder invocationBuilder = webTarget.request(MediaType.APPLICATION_JSON_TYPE);
+        //Response response = invocationBuilder.post(Entity.entity(ticket, MediaType.APPLICATION_JSON));
+        if( response.getStatus() == 400 ) {
+            return false;
+        }
+        return true;
+    }
+
 }
