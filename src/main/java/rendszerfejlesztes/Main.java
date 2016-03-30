@@ -2,6 +2,7 @@ package rendszerfejlesztes;
 
 import rendszerfejlesztes.controllers.EventController;
 import rendszerfejlesztes.controllers.UserController;
+import rendszerfejlesztes.controllers.TicketController;
 import rendszerfejlesztes.modell.User;
 import rendszerfejlesztes.service.EventManager;
 import rendszerfejlesztes.service.TestConnection;
@@ -140,6 +141,7 @@ public class Main {
         System.out.println("1.\tProgamok kozotti kereses");
         System.out.println("2.\tFelhasznalok listazasa");
         System.out.println("3.\tFelhasznalok kozotti kereses");
+        System.out.println("4.\tJegyek kiadasa");
         System.out.println("X.\tKijelentkezes");
         System.out.println("0.\tKilepes");
     }
@@ -154,6 +156,9 @@ public class Main {
                 break;
             case "3":
                 UserController.searchUser();
+                break;
+            case "4":
+                TicketController.handOutTicket();
                 break;
             case "x":
                 UserController.logout();

@@ -60,4 +60,14 @@ public class TicketManagerImpl extends BaseManager implements TicketManager {
         return true;
     }
 
+    public Ticket setPaidTrue(Ticket ticket){
+        WebTarget webTarget = getClient().target( getBaseTargetUrl() ).path("user").path("paid");
+
+        Invocation.Builder invocationBuilder = webTarget.request(MediaType.APPLICATION_JSON_TYPE);
+        Response response = invocationBuilder.put(Entity.entity(ticket, MediaType.APPLICATION_JSON));
+        Ticket created = response.readEntity(Ticket.class);
+
+        return created;
+    }
+
 }

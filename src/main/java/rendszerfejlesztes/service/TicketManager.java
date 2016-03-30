@@ -16,4 +16,6 @@ public interface TicketManager {
 
     boolean removeTickets(Ticket ticket);
 
+    Ticket setPaidTrue(Ticket ticket);
+
 }

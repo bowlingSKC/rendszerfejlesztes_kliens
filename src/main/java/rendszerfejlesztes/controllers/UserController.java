@@ -4,10 +4,8 @@ import rendszerfejlesztes.Constants;
 import rendszerfejlesztes.Main;
 import rendszerfejlesztes.Updater;
 import rendszerfejlesztes.Util;
-import rendszerfejlesztes.modell.Sector;
 import rendszerfejlesztes.modell.Ticket;
 import rendszerfejlesztes.modell.User;
-import rendszerfejlesztes.service.TicketManager;
 
 import java.io.IOException;
 import java.util.ArrayList;
@@ -47,7 +45,7 @@ public class UserController {
             if( response.toLowerCase().equals("m") ) {
                 System.out.print("Jegy szama:   ");
                 int selected = Util.readIntFromCmd();
-                TicketContoller.showTicket(tickets.get(selected - 1));
+                TicketController.showTicket(tickets.get(selected - 1));
             }
             if( response.toLowerCase().equals("l") ) {
                 removeTicket();
@@ -82,7 +80,7 @@ public class UserController {
 
     public static void removeTicket(){
         List<Ticket> tickets = Main.getLoggedUser().getTickets();
-        System.out.print("Jegyek sorszama (kotojellel elvalasztva):   ");
+        System.out.print("Jegyek sorszama (kotojellel elvalasztva): ");
         String selected = null;
         try {
             selected = Util.readStringFromCmd();

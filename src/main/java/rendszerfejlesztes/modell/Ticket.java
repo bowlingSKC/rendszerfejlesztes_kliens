@@ -1,13 +1,13 @@
 package rendszerfejlesztes.modell;
 
 import rendszerfejlesztes.Constants;
+import rendszerfejlesztes.Main;
 import rendszerfejlesztes.service.TicketManager;
 import rendszerfejlesztes.service.impl.TicketManagerImpl;
 
 import java.util.Date;
 
 public class Ticket {
-
 
     private Integer id;
     private Sector sector;
@@ -105,4 +105,19 @@ public class Ticket {
     public void setStatus(Integer status) {
         this.status = status;
     }
+
+    @Override
+    public String toString() {
+        return "Ticket{" +
+                "id=" + id +
+                ", sector=" + sector +
+                ", user=" + user +
+                ", bookedTime=" + bookedTime +
+                ", paid=" + paid +
+                ", row=" + row +
+                ", col=" + col +
+                ", status=" + status +
+                '}';
+    }
+
 }
