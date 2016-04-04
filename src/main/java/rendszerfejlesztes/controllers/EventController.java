@@ -3,10 +3,7 @@ package rendszerfejlesztes.controllers;
 import rendszerfejlesztes.Constants;
 import rendszerfejlesztes.Main;
 import rendszerfejlesztes.Util;
-import rendszerfejlesztes.modell.Event;
-import rendszerfejlesztes.modell.Location;
-import rendszerfejlesztes.modell.Performer;
-import rendszerfejlesztes.modell.Ticket;
+import rendszerfejlesztes.modell.*;
 
 import java.io.IOException;
 import java.util.Date;
@@ -65,7 +62,6 @@ public class EventController {
         System.out.println("Eloado:         " + event.getPerformer().getName());
         System.out.println("Kezdes:         " + Constants.DATE_FORMAT.format(event.getStart()));
         System.out.println("Befejezes:      " + Constants.DATE_FORMAT.format(Util.addMinsToDate(event.getStart(), event.getDuration())));
-        System.out.println("Jegyar:         " + event.getPrice());
         System.out.println("Leiras:");
         System.out.println(event.getDescription());
         System.out.println("\n(F)oglalas\t(V)issza");
@@ -81,32 +77,66 @@ public class EventController {
     }
 
     public static void bookEvent(Event event) throws IOException {
-        System.out.println(" ***  Szinpad  *** ");
-        for(int i = 0; i < event.getSectorList().size(); i++) {
-            System.out.println((i+1) + ". szektor");
-        }
 
-        System.out.print("Melyik szektorba szeretne jegyet? ");
-        int selectedSector = Util.readIntFromCmd();
+        System.out.print("Hany darab jegyet szeretne foglalni? ");
+        int numOfTicket = Util.readIntFromCmd();
 
-        if( event.isSeats() ) {
-            System.out.println("ezt kesobb ...");
-        } else {
-            Ticket ticket = new Ticket();
-            ticket.setSector( event.getSectorList().get(selectedSector-1) );
-            ticket.setBookedTime(new Date());
-            ticket.setPaid(false);
-            ticket.setStatus(2);
-            ticket.setUser(Main.getLoggedUser());
-
-
-            Ticket db = Main.getTicketManager().bookTicket(Main.getLoggedUser(), ticket);
-            if( db != null ) {
-                System.out.println("Sikeresen lefoglalta a jegyet!");
-                Main.getLoggedUser().getTickets().add(db);
+        for(int i = 0; i < numOfTicket; i++) {
+            System.out.println(" ***  Szinpad  *** ");
+            for(int j = 0; j < event.getSectorList().size(); j++) {
+                System.out.println((j+1) + ". szektor");
             }
 
+            System.out.print("Melyik szektorba szeretne jegyet? ");
+            int selectedSector = Util.readIntFromCmd();
+
+            if( event.isSeats() ) {
+
+                Sector selected = event.getSectorList().get(selectedSector - 1);
+
+                selected.showSeats();
+                System.out.print("Sor szama:    ");
+                int row = Util.readIntFromCmd();
+                System.out.print("Oszlop szama: ");
+                int col = Util.readIntFromCmd();
+
+                if( selected.isSeatReserved(col, row) ) {
+                    System.out.println("A megadott szek mar le van foglalva");
+                } else {
+                    Ticket ticket = new Ticket();
+                    ticket.setSector( new Sector(selected.getId()) );
+                    ticket.setBookedTime(new Date());
+                    ticket.setPaid(false);
+                    ticket.setStatus(2);
+                    ticket.setUser(new User(Main.getLoggedUser().getId()));
+                    ticket.setRow(row);
+                    ticket.setCol(col);
+
+                    Ticket db = Main.getTicketManager().bookTicket(ticket);
+                    if( db != null ) {
+                        System.out.println("Sikeresen lefoglalta a jegyet!");
+                        Main.getLoggedUser().getTickets().add(db);
+                    }
+                }
+
+            } else {
+                Ticket ticket = new Ticket();
+                ticket.setSector( event.getSectorList().get(selectedSector-1) );
+                ticket.setBookedTime(new Date());
+                ticket.setPaid(false);
+                ticket.setStatus(2);
+                ticket.setUser(Main.getLoggedUser());
+
+
+                Ticket db = Main.getTicketManager().bookTicket(ticket);
+                if( db != null ) {
+                    System.out.println("Sikeresen lefoglalta a jegyet!");
+                    Main.getLoggedUser().getTickets().add(db);
+                }
+
+            }
         }
+
     }
 
 }

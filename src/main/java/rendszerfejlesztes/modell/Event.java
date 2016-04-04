@@ -10,7 +10,6 @@ public class Event {
     private Date start;
     private Integer duration;
     private String description;
-    private Integer price;
     private Location location;
     private Performer performer;
     private List<Sector> sectorList;
@@ -19,12 +18,11 @@ public class Event {
     public Event() {
     }
 
-    public Event(String name, Date start, Integer duration, String description, Integer price) {
+    public Event(String name, Date start, Integer duration, String description) {
         this.name = name;
         this.start = start;
         this.duration = duration;
         this.description = description;
-        this.price = price;
     }
 
     public String getName() {
@@ -57,14 +55,6 @@ public class Event {
 
     public void setDescription(String description) {
         this.description = description;
-    }
-
-    public Integer getPrice() {
-        return price;
-    }
-
-    public void setPrice(Integer price) {
-        this.price = price;
     }
 
     public Integer getId() {
@@ -115,7 +105,6 @@ public class Event {
                 ", start=" + start +
                 ", duration=" + duration +
                 ", description='" + description + '\'' +
-                ", price=" + price +
                 ", location=" + location +
                 '}';
     }

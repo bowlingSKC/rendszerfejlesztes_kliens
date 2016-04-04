@@ -22,6 +22,10 @@ public class User {
 
     }
 
+    public User(Integer id) {
+        this.id = id;
+    }
+
     public User(String name, String email, String password) {
         this(name, email, password, Constants.USER_PRIVILAGE_ID);
     }

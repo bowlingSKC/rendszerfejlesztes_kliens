@@ -24,6 +24,10 @@ public class Sector {
         this.depth = depth;
     }
 
+    public Sector(Integer id) {
+        this.id = id;
+    }
+
     public Integer getId() {
         return id;
     }
@@ -78,5 +82,33 @@ public class Sector {
 
     public void setTickets(List<Ticket> tickets) {
         this.tickets = tickets;
+    }
+
+    public boolean isSeatReserved(int col, int row) {
+        for(Ticket ticket : tickets) {
+            if( ticket.getCol() == col && ticket.getRow() == row ) {
+                return true;
+            }
+        }
+        return false;
+    }
+
+    public void showSeats() {
+        for(int i = 1; i <= numOfCols; i++) {
+            System.out.print("  " + i);
+        }
+        System.out.println();
+
+        for(int i = 1; i <= numOfRows; i++) {
+            System.out.print(i + " ");
+            for(int j = 1; j <= numOfCols; j++) {
+                if( isSeatReserved(j, i) ) {
+                    System.out.print("X  ");
+                } else {
+                    System.out.print("O  ");
+                }
+            }
+            System.out.println();
+        }
     }
 }

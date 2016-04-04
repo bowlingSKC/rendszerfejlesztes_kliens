@@ -3,6 +3,7 @@ package rendszerfejlesztes;
 import rendszerfejlesztes.modell.Event;
 import rendszerfejlesztes.modell.Sector;
 import rendszerfejlesztes.modell.Ticket;
+import rendszerfejlesztes.modell.User;
 import rendszerfejlesztes.service.EventManager;
 import rendszerfejlesztes.service.TicketManager;
 import rendszerfejlesztes.service.impl.EventManagerImpl;

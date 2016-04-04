@@ -33,7 +33,7 @@ public class UserController {
     }
 
     public static void showMyTickets() {
-        List<Ticket> tickets = Main.getLoggedUser().getTickets();
+        List<Ticket> tickets = Main.getTicketManager().getTicketByUser(Main.getLoggedUser());
         for(int i = 0; i < tickets.size(); i++) {
             Updater.updateTicket(tickets.get(i));
             System.out.println( (i+1) + ". " + tickets.get(i).getSector().getEvent().getName() + " - " +
@@ -79,6 +79,8 @@ public class UserController {
     }
 
     public static void removeTicket(){
+        // TODO csak azokat a jegyeket listázni, amik nem lettek kifizetve (azt is szerverről)
+        // TODO törléskor rossz jegy törlődik
         List<Ticket> tickets = Main.getLoggedUser().getTickets();
         System.out.print("Jegyek sorszama (kotojellel elvalasztva): ");
         String selected = null;
@@ -118,7 +120,7 @@ public class UserController {
                 }
             }
             for(Ticket tic : remTic){
-                //Main.getLoggedUser().getTickets().remove(tic);
+                Main.getLoggedUser().getTickets().remove(tic);
             }
             System.out.println("");
         } catch (IOException e) {

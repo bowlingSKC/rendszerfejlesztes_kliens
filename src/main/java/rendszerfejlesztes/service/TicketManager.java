@@ -12,7 +12,7 @@ public interface TicketManager {
 
     Sector getSectorByTicket(Ticket ticket);
 
-    Ticket bookTicket(User user, Ticket ticket);
+    Ticket bookTicket(Ticket ticket);
 
     boolean removeTickets(Ticket ticket);
 
