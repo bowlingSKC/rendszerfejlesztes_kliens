@@ -47,7 +47,7 @@ public class TicketManagerImpl extends BaseManager implements TicketManager {
         WebTarget webTarget = getClient().target( getBaseTargetUrl() ).path("booking").path("delete");
         Invocation.Builder invocationBuilder = webTarget.request(MediaType.APPLICATION_JSON_TYPE);
         Response response = invocationBuilder.post(Entity.entity(ticket, MediaType.APPLICATION_JSON));
-        if( response.getStatus() == 400 ) {
+        if( response.getStatus() != 200 ) {
             return false;
         }
         return true;

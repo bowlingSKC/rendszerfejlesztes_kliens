@@ -81,7 +81,7 @@ public class UserController {
     public static void removeTicket(){
         // TODO csak azokat a jegyeket listázni, amik nem lettek kifizetve (azt is szerverről)
         // TODO törléskor rossz jegy törlődik
-        List<Ticket> tickets = Main.getLoggedUser().getTickets();
+        List<Ticket> tickets =  Main.getTicketManager().getTicketByUser(Main.getLoggedUser());
         System.out.print("Jegyek sorszama (kotojellel elvalasztva): ");
         String selected = null;
         try {

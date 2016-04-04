@@ -2,6 +2,7 @@ package rendszerfejlesztes.controllers;
 
 import rendszerfejlesztes.Constants;
 import rendszerfejlesztes.Main;
+import rendszerfejlesztes.Updater;
 import rendszerfejlesztes.Util;
 import rendszerfejlesztes.modell.Ticket;
 import rendszerfejlesztes.modell.User;
@@ -35,6 +36,13 @@ public class TicketController {
             System.out.print("E-mail: ");
             user.setEmail( Util.readStringFromCmd() );
             List<User> users = Main.getUserManager().searchUser(user);
+            /*List<User> tempusers = Main.getUserManager().getAllUser();
+            List<User> users = new ArrayList<>();
+            for(User usr : tempusers){
+                if(usr.getName().toLowerCase().contains(user.getName().toLowerCase()) || usr.getEmail().contains(user.getEmail())){
+                    users.add(usr);
+                }
+            }*/
             for(int i = 0; i < users.size(); i++) {
                 System.out.println( (i+1) + ". Nev: " + users.get(i).getName() + " - Email: " +  users.get(i).getEmail());
             }
@@ -44,8 +52,18 @@ public class TicketController {
                 for(int i = 0; i < users.size(); i++) {
                     if(i == selected-1){
                         List<Ticket> tickets = users.get(i).getTickets();
+                        int count = 0;
                         for(int j = 0; j < tickets.size(); j++) {
-                            System.out.println( (j+1) + ". " + tickets.get(j).toString());
+                            Updater.updateTicket(tickets.get(j));
+                            if(tickets.get(j).isPaid()){
+                                tickets.remove(j);
+                            }else{
+                                count++;
+                                System.out.println( (count) + ". Esemeny: " + tickets.get(j).getSector().getEvent().getName() + " Datum: " +
+                                        Constants.DATE_FORMAT.format(tickets.get(j).getSector().getEvent().getStart()) + " Sektor: " +
+                                        tickets.get(j).getSector().getId() + " Sor: " + tickets.get(j).getRow() + " Oszlop: " +
+                                        tickets.get(j).getCol() );
+                            }
                         }
 
                         //SORSZAMOK OLVASASA
