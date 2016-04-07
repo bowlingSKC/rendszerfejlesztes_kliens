@@ -3,6 +3,7 @@ package rendszerfejlesztes.service;
 import rendszerfejlesztes.modell.Event;
 import rendszerfejlesztes.modell.Location;
 import rendszerfejlesztes.modell.Sector;
+import rendszerfejlesztes.modell.Subscription;
 
 import java.util.List;
 
@@ -13,5 +14,6 @@ public interface EventManager {
 
     List<Location> getAllLocations();
     Event getEventBySector(Sector sector);
+    Event getEventBySubscription(Subscription subscription);
 
 }

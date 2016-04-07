@@ -5,6 +5,7 @@ import rendszerfejlesztes.Main;
 import rendszerfejlesztes.service.TicketManager;
 import rendszerfejlesztes.service.impl.TicketManagerImpl;
 
+import java.util.Comparator;
 import java.util.Date;
 
 public class Ticket {
@@ -120,4 +121,14 @@ public class Ticket {
                 '}';
     }
 
+    public String printTicketPath() {
+        String ret = "Esemeny: " + this.getSector().getEvent().getName() + "\tDatum: " +
+                Constants.DATE_FORMAT.format(this.getSector().getEvent().getStart()) + "\tHossz: "+
+                this.getSector().getEvent().getDuration() + " perc\tSzektor: " + this.getSector().getDepth();
+        if (this.getCol() != null) {
+            ret += "\tSor: " + this.getRow() + "\tOszlop: " +
+                    this.getCol();
+        }
+        return ret;
+    }
 }

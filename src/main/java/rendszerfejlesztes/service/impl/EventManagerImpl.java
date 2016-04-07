@@ -1,16 +1,14 @@
 package rendszerfejlesztes.service.impl;
 
-import rendszerfejlesztes.modell.Event;
-import rendszerfejlesztes.modell.Location;
-import rendszerfejlesztes.modell.Sector;
+import rendszerfejlesztes.Main;
+import rendszerfejlesztes.modell.*;
 import rendszerfejlesztes.service.EventManager;
 
 import javax.ws.rs.client.Entity;
 import javax.ws.rs.client.Invocation;
 import javax.ws.rs.client.WebTarget;
-import javax.ws.rs.core.GenericType;
-import javax.ws.rs.core.MediaType;
-import javax.ws.rs.core.Response;
+import javax.ws.rs.core.*;
+import java.lang.annotation.Annotation;
 import java.util.ArrayList;
 import java.util.List;
 
@@ -45,6 +43,17 @@ public class EventManagerImpl extends BaseManager implements EventManager {
 
         Invocation.Builder invocationBuilder = webTarget.request(MediaType.APPLICATION_JSON_TYPE);
         Response response = invocationBuilder.post(Entity.entity(sector, MediaType.APPLICATION_JSON));
+        Event event = response.readEntity(Event.class);
+
+        return event;
+    }
+
+    @Override
+    public Event getEventBySubscription(Subscription subscription){
+        WebTarget webTarget  = getClient().target(getBaseTargetUrl()).path("event").path("bysubscription").path(subscription.getId().toString());
+
+        //Invocation.Builder invocationBuilder = webTarget.request(MediaType.APPLICATION_JSON_TYPE);
+        Response response = webTarget.request().get();
         Event event = response.readEntity(Event.class);
 
         return event;

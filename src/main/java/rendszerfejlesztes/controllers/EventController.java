@@ -64,16 +64,23 @@ public class EventController {
         System.out.println("Befejezes:      " + Constants.DATE_FORMAT.format(Util.addMinsToDate(event.getStart(), event.getDuration())));
         System.out.println("Leiras:");
         System.out.println(event.getDescription());
-        System.out.println("\n(F)oglalas\t(V)issza");
+        System.out.println("\n(F)oglalas\t(K)ovetes\t(V)issza");
 
         try {
             String action = Util.readStringFromCmd().toLowerCase();
             if(action.equals("f")) {
                 bookEvent(event);
             }
+            if(action.equals("k")) {
+                subscribe(event);
+            }
         } catch (IOException e) {
             e.printStackTrace();
         }
+    }
+
+    public static void subscribe(Event event){
+        Main.getSubscribeManager().subscribe(event);
     }
 
     public static void bookEvent(Event event) throws IOException {

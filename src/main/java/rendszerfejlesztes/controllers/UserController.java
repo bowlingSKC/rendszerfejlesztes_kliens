@@ -36,8 +36,19 @@ public class UserController {
         List<Ticket> tickets = Main.getTicketManager().getTicketByUser(Main.getLoggedUser());
         for(int i = 0; i < tickets.size(); i++) {
             Updater.updateTicket(tickets.get(i));
-            System.out.println( (i+1) + ". " + tickets.get(i).getSector().getEvent().getName() + " - " +
-                    Constants.DATE_FORMAT.format(tickets.get(i).getSector().getEvent().getStart()) );
+            System.out.print((i + 1) + ".\tEsemeny: " + tickets.get(i).getSector().getEvent().getName() + "\tDatum: " +
+                    Constants.DATE_FORMAT.format(tickets.get(i).getSector().getEvent().getStart()) + "\tSzektor: " +
+                    tickets.get(i).getSector().getDepth());
+            if(tickets.get(i).getCol() != null){
+                System.out.print("\tSor: " + tickets.get(i).getRow() + "\tOszlop: " +
+                        tickets.get(i).getCol());
+            }
+            System.out.print("\tAr: " + tickets.get(i).getSector().getPrice() + " Ft");
+            if(tickets.get(i).isPaid() ) {
+                System.out.println("\tFizetett.");
+            } else {
+                System.out.println("\tNem fizetett");
+            }
         }
         System.out.println("(M)egtekint\t(L)Lemond\t(V)issza");
         try {
@@ -79,8 +90,6 @@ public class UserController {
     }
 
     public static void removeTicket(){
-        // TODO csak azokat a jegyeket listázni, amik nem lettek kifizetve (azt is szerverről)
-        // TODO törléskor rossz jegy törlődik
         List<Ticket> tickets =  Main.getTicketManager().getTicketByUser(Main.getLoggedUser());
         System.out.print("Jegyek sorszama (kotojellel elvalasztva): ");
         String selected = null;

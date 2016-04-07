@@ -1,17 +1,13 @@
 package rendszerfejlesztes;
 
 import rendszerfejlesztes.controllers.EventController;
+import rendszerfejlesztes.controllers.SubscribeController;
 import rendszerfejlesztes.controllers.UserController;
 import rendszerfejlesztes.controllers.TicketController;
+import rendszerfejlesztes.modell.Subscription;
 import rendszerfejlesztes.modell.User;
-import rendszerfejlesztes.service.EventManager;
-import rendszerfejlesztes.service.TestConnection;
-import rendszerfejlesztes.service.TicketManager;
-import rendszerfejlesztes.service.UserManager;
-import rendszerfejlesztes.service.impl.EventManagerImpl;
-import rendszerfejlesztes.service.impl.TestConnectionImpl;
-import rendszerfejlesztes.service.impl.TicketManagerImpl;
-import rendszerfejlesztes.service.impl.UserManagerImpl;
+import rendszerfejlesztes.service.*;
+import rendszerfejlesztes.service.impl.*;
 
 import java.io.IOException;
 import java.util.List;
@@ -20,6 +16,7 @@ public class Main {
 
     private static final EventManager eventManager = new EventManagerImpl();
     private static final UserManager userManager = new UserManagerImpl();
+    private static final SubscribeManager subscribeManager = new SubscribeManagerImpl();
 
     public static EventManager getEventManager() {
         return eventManager;
@@ -32,6 +29,8 @@ public class Main {
     public static TicketManager getTicketManager() {
         return ticketManager;
     }
+
+    public static SubscribeManager getSubscribeManager() {return subscribeManager; }
 
     private static final TicketManager ticketManager = new TicketManagerImpl();
     private static final TestConnection testConnection = new TestConnectionImpl();
@@ -114,6 +113,8 @@ public class Main {
     private void printLoggedMenu() {
         System.out.println("1.\tProgamok kozotti kereses");
         System.out.println("2.\tJegyeim");
+        System.out.println("3.\tUtvonal terv");
+        System.out.println("4.\tFeliratkozasok");
         System.out.println("X.\tKijelentkezes");
         System.out.println("0.\tKilepes");
     }
@@ -128,6 +129,12 @@ public class Main {
                 break;
             case "2":
                 UserController.showMyTickets();
+                break;
+            case "3":
+                TicketController.findPath();
+                break;
+            case "4":
+                SubscribeController.showSubscriptions();
                 break;
             case "x":
                 UserController.logout();

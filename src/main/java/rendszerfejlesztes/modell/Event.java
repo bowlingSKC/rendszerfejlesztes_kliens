@@ -1,5 +1,7 @@
 package rendszerfejlesztes.modell;
 
+import rendszerfejlesztes.Constants;
+
 import java.util.Date;
 import java.util.List;
 
@@ -107,6 +109,28 @@ public class Event {
                 ", description='" + description + '\'' +
                 ", location=" + location +
                 '}';
+    }
+
+    public String printPath(){
+        Date befejez = new Date();
+        befejez.setTime(start.getTime() + 1000*60*duration);
+        return "Esemeny: " + name + "\tKezdes: " + Constants.DATE_FORMAT.format(start) +
+                "\tVarhato befejezes: " + Constants.DATE_FORMAT.format(befejez) +
+                "\tHossz: " + duration + " perc\tHelyszin: " + location.getName();
+    }
+
+    @Override
+    public boolean equals(Object o) {
+        if (this == o) return true;
+        if (o == null || getClass() != o.getClass()) return false;
+
+        Event event = (Event) o;
+
+        if (id != null ? !id.equals(event.id) : event.id != null) return false;
+        if (name != null ? !name.equals(event.name) : event.name != null) return false;
+        if (start != null ? !start.equals(event.start) : event.start != null) return false;
+
+        return true;
     }
 
 }

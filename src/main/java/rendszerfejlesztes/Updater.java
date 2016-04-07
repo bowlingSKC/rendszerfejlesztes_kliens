@@ -1,13 +1,12 @@
 package rendszerfejlesztes;
 
-import rendszerfejlesztes.modell.Event;
-import rendszerfejlesztes.modell.Sector;
-import rendszerfejlesztes.modell.Ticket;
-import rendszerfejlesztes.modell.User;
+import rendszerfejlesztes.modell.*;
 import rendszerfejlesztes.service.EventManager;
 import rendszerfejlesztes.service.TicketManager;
 import rendszerfejlesztes.service.impl.EventManagerImpl;
 import rendszerfejlesztes.service.impl.TicketManagerImpl;
+
+import java.util.List;
 
 public class Updater {
 
@@ -25,6 +24,14 @@ public class Updater {
             EventManager manager = new EventManagerImpl();
             Event event = manager.getEventBySector(sector);
             sector.setEvent( event );
+        }
+    }
+
+    public static void updateSubscription(Subscription subscription) {
+        if( subscription.getEvent() == null ) {
+            EventManager manager = new EventManagerImpl();
+            Event event = manager.getEventBySubscription(subscription);
+            subscription.setEvent( event );
         }
     }
 
