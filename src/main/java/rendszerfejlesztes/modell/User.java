@@ -17,6 +17,7 @@ public class User {
     private String password;
     private Integer privilage;
     private List<Ticket> tickets;
+    private List<Subscription> subscriptions;
 
     public User() {
 
@@ -84,6 +85,10 @@ public class User {
     public void setTickets(List<Ticket> tickets) {
         this.tickets = tickets;
     }
+
+    public List<Subscription> getSubscriptions() {return subscriptions;}
+
+    public void setSubscriptions(List<Subscription> subscriptions) {this.subscriptions = subscriptions;}
 
     public String toNiceString() {
         if(this .privilage == 1){

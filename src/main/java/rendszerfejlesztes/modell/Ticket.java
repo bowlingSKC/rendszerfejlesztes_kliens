@@ -18,6 +18,7 @@ public class Ticket {
     private Integer row;
     private Integer col;
     private Integer status;
+    private Discount discount;
 
     public Ticket() {
 
@@ -41,6 +42,17 @@ public class Ticket {
         this.row = row;
         this.col = col;
         this.status = Constants.TICKET_OPTIONAL;
+    }
+
+    public Ticket(Sector sector, User user, Date bookedTime, boolean paid, Integer row, Integer col, Integer status, Discount discount) {
+        this.sector = sector;
+        this.user = user;
+        this.bookedTime = bookedTime;
+        this.paid = paid;
+        this.row = row;
+        this.col = col;
+        this.status = status;
+        this.discount = discount;
     }
 
     public Integer getId() {
@@ -107,6 +119,10 @@ public class Ticket {
         this.status = status;
     }
 
+    public Discount getDiscount() {return discount;}
+
+    public void setDiscount(Discount discount) {this.discount = discount;}
+
     @Override
     public String toString() {
         return "Ticket{" +
@@ -118,6 +134,7 @@ public class Ticket {
                 ", row=" + row +
                 ", col=" + col +
                 ", status=" + status +
+                ", discount=" + discount +
                 '}';
     }
 

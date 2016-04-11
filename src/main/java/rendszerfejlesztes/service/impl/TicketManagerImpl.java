@@ -1,5 +1,6 @@
 package rendszerfejlesztes.service.impl;
 
+import rendszerfejlesztes.modell.Discount;
 import rendszerfejlesztes.modell.Sector;
 import rendszerfejlesztes.modell.Ticket;
 import rendszerfejlesztes.modell.User;
@@ -53,6 +54,7 @@ public class TicketManagerImpl extends BaseManager implements TicketManager {
         return true;
     }
 
+    @Override
     public Ticket setPaidTrue(Ticket ticket){
         WebTarget webTarget = getClient().target( getBaseTargetUrl() ).path("user").path("paid");
 
@@ -61,6 +63,26 @@ public class TicketManagerImpl extends BaseManager implements TicketManager {
         Ticket created = response.readEntity(Ticket.class);
 
         return created;
+    }
+
+    @Override
+    public boolean updateDiscount(Discount discount, Integer discount_id){
+        WebTarget webTarget = getClient().target( getBaseTargetUrl() ).path("booking").path("updateDiscount").path(discount_id.toString());
+        Invocation.Builder invocationBuilder = webTarget.request(MediaType.APPLICATION_JSON_TYPE);
+        Response response = invocationBuilder.post(Entity.entity(discount, MediaType.APPLICATION_JSON));
+        if( response.getStatus() != 200 ) {
+            return false;
+        }
+        return true;
+
+    }
+
+    @Override
+    public List<Discount> getAllDiscount(){
+        WebTarget webTarget = getClient().target(getBaseTargetUrl()).path("booking").path("getAllDiscount");
+        GenericType<List<Discount>> wrapper = new GenericType<List<Discount>>() {};
+        List<Discount> discounts = webTarget.request().get(wrapper);
+        return discounts;
     }
 
 }

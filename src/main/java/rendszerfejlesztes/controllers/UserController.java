@@ -4,6 +4,7 @@ import rendszerfejlesztes.Constants;
 import rendszerfejlesztes.Main;
 import rendszerfejlesztes.Updater;
 import rendszerfejlesztes.Util;
+import rendszerfejlesztes.modell.Discount;
 import rendszerfejlesztes.modell.Ticket;
 import rendszerfejlesztes.modell.User;
 
@@ -43,14 +44,15 @@ public class UserController {
                 System.out.print("\tSor: " + tickets.get(i).getRow() + "\tOszlop: " +
                         tickets.get(i).getCol());
             }
-            System.out.print("\tAr: " + tickets.get(i).getSector().getPrice() + " Ft");
+            System.out.print("\tAr: " + tickets.get(i).getSector().getPrice() * tickets.get(i).getDiscount().getValue() + " Ft");
+            System.out.print("\t" + tickets.get(i).getDiscount().getName());
             if(tickets.get(i).isPaid() ) {
-                System.out.println("\tFizetett.");
+                System.out.println("\tFizetett");
             } else {
                 System.out.println("\tNem fizetett");
             }
         }
-        System.out.println("(M)egtekint\t(L)Lemond\t(V)issza");
+        System.out.println("(M)egtekint\t(L)emond\t(K)edvezmenyek\t(V)issza");
         try {
             String response = Util.readStringFromCmd();
             if( response.toLowerCase().equals("m") ) {
@@ -60,6 +62,9 @@ public class UserController {
             }
             if( response.toLowerCase().equals("l") ) {
                 removeTicket();
+            }
+            if( response.toLowerCase().equals("k") ) {
+                discounts();
             }
         } catch (IOException e) {
             e.printStackTrace();
@@ -136,6 +141,36 @@ public class UserController {
             e.printStackTrace();
         }
         //Main.setLoggedUser( Main.getUserManager().updateUser(Main.getLoggedUser()));
+    }
+
+    public static void discounts(){
+        List<Ticket> tickets = Main.getTicketManager().getTicketByUser(Main.getLoggedUser());
+        try {
+            List<Discount> discounts = Main.getTicketManager().getAllDiscount();
+            System.out.print("Jegy szama:   ");
+            int selected = Util.readIntFromCmd();
+            Ticket updated = tickets.get(selected-1);
+            System.out.println("\nValaszthato kedvezmenyek:\n\t");
+            for(int i = 0; i < discounts.size(); i++){
+                System.out.println((i+1) + ". " + discounts.get(i).getName());
+            }
+            System.out.println("Kivalasztott: "+tickets.get(selected-1));
+            System.out.print("Valasztott kedvezmeny: ");
+            selected = Util.readIntFromCmd();
+
+            for(Discount dis : discounts){
+                if(dis.getId() == selected){
+                    if(Main.getTicketManager().updateDiscount(dis,updated.getId())){
+                        System.out.println("Sikeres modositas!");
+                    }else{
+                        System.out.println("Sikertelen modositas!");
+                    }
+                }
+            }
+        } catch (IOException e) {
+            e.printStackTrace();
+        }
+
     }
 
 }

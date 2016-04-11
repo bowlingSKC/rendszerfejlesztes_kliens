@@ -114,7 +114,7 @@ public class TicketController {
                                     System.out.print("\tSor: " + tickets.get(j).getRow() + "\tOszlop: " +
                                             tickets.get(j).getCol());
                                 }
-                                System.out.println("\tAr: " + tickets.get(j).getSector().getPrice() + " Ft");
+                                System.out.println("\tAr: " + tickets.get(j).getSector().getPrice() * tickets.get(j).getDiscount().getValue() + " Ft");
                             }
 
                             //SORSZAMOK OLVASASA
@@ -145,7 +145,7 @@ public class TicketController {
                                 }
                                 int sum = 0;
                                 for(Ticket tic : wishedTickets){
-                                    sum += tic.getSector().getPrice();
+                                    sum += tic.getSector().getPrice() * tic.getDiscount().getValue();
                                     //sum += Main.getTicketManager().getSectorByTicket(tic).getPrice();
                                 }
                                 System.out.println("Vegosszeg: " + sum + " Ft   Jovahagyja a fizetest? (I/N)");

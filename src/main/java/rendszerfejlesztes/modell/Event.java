@@ -15,6 +15,7 @@ public class Event {
     private Location location;
     private Performer performer;
     private List<Sector> sectorList;
+    private List<Subscription> subscriptions;
     private boolean seats;
 
     public Event() {
@@ -98,6 +99,10 @@ public class Event {
     public void setSeats(boolean seats) {
         this.seats = seats;
     }
+
+    public List<Subscription> getSubscriptions() {return subscriptions;}
+
+    public void setSubscriptions(List<Subscription> subscriptions) {this.subscriptions = subscriptions;}
 
     @Override
     public String toString() {

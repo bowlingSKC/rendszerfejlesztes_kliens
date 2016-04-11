@@ -1,5 +1,6 @@
 package rendszerfejlesztes.service;
 
+import rendszerfejlesztes.modell.Discount;
 import rendszerfejlesztes.modell.Sector;
 import rendszerfejlesztes.modell.Ticket;
 import rendszerfejlesztes.modell.User;
@@ -18,4 +19,7 @@ public interface TicketManager {
 
     Ticket setPaidTrue(Ticket ticket);
 
+    boolean updateDiscount(Discount discount, Integer discount_id);
+
+    List<Discount> getAllDiscount();
 }
