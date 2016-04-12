@@ -9,7 +9,7 @@ import javax.ws.rs.client.ClientBuilder;
 public class BaseManager {
 
     private static Client client = ClientBuilder.newClient(new ClientConfig().register( JacksonFeature.class ));
-    private static final String BASE_TARGET_URL = "http://localhost:8080/szerver_Web_exploded/api";
+    private static final String BASE_TARGET_URL = "http://localhost:8080/rendszerfejlesztes_szerver_war_exploded/api";
 
     public static Client getClient() {
         return client;

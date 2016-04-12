@@ -26,7 +26,7 @@ public class TicketManagerImpl extends BaseManager implements TicketManager {
 
     @Override
     public Sector getSectorByTicket(Ticket ticket) {
-        WebTarget webTarget = getClient().target( getBaseTargetUrl() ).path("booking").path("sectors");
+        WebTarget webTarget = getClient().target( getBaseTargetUrl() ).path("event").path("sectors").path("byticket");
         Invocation.Builder invocationBuilder = webTarget.request(MediaType.APPLICATION_JSON_TYPE);
         Response response = invocationBuilder.post(Entity.entity(ticket, MediaType.APPLICATION_JSON));
         Sector sector = response.readEntity(Sector.class);
@@ -36,7 +36,7 @@ public class TicketManagerImpl extends BaseManager implements TicketManager {
     @Override
     public Ticket bookTicket(Ticket ticket) {
 
-        Response response = getClient().target( getBaseTargetUrl() ).path("booking").path("book").request().put(Entity.entity(ticket, MediaType.APPLICATION_JSON));
+        Response response = getClient().target( getBaseTargetUrl() ).path("booking").request().put(Entity.entity(ticket, MediaType.APPLICATION_JSON));
         if( response.getStatus() != 200 ) {
             throw new RuntimeException("Nem sikerult a mentes szerver oldalon!");
         }
