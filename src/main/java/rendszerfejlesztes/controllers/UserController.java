@@ -62,9 +62,11 @@ public class UserController {
             }
             if( response.toLowerCase().equals("l") ) {
                 removeTicket();
+                showMyTickets();
             }
             if( response.toLowerCase().equals("k") ) {
                 discounts();
+                showMyTickets();
             }
         } catch (IOException e) {
             e.printStackTrace();
