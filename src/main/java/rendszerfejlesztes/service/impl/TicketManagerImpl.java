@@ -36,7 +36,7 @@ public class TicketManagerImpl extends BaseManager implements TicketManager {
     @Override
     public Ticket bookTicket(Ticket ticket) {
 
-        Response response = getClient().target( getBaseTargetUrl() ).path("booking").request().put(Entity.entity(ticket, MediaType.APPLICATION_JSON));
+        Response response = getClient().target( getBaseTargetUrl() ).path("booking").path("book").request().put(Entity.entity(ticket, MediaType.APPLICATION_JSON));
         if( response.getStatus() != 200 ) {
             throw new RuntimeException("Nem sikerult a mentes szerver oldalon!");
         }

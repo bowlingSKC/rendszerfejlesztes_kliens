@@ -1,6 +1,7 @@
 package rendszerfejlesztes.controllers;
 
 
+import rendszerfejlesztes.Constants;
 import rendszerfejlesztes.Main;
 import rendszerfejlesztes.Updater;
 import rendszerfejlesztes.modell.Subscription;
@@ -13,7 +14,8 @@ public class SubscribeController {
         List<Subscription> subscriptions = Main.getSubscribeManager().getUserSubscription(Main.getLoggedUser());
         for(int i = 0; i < subscriptions.size(); i++){
             Updater.updateSubscription(subscriptions.get(i));
-            System.out.println(i+1 + ". " + subscriptions.get(i).getEvent().getName());
+            System.out.println(i+1 + ". " + subscriptions.get(i).getEvent().getName() + "\t" +
+                    Constants.DATE_FORMAT.format(subscriptions.get(i).getEvent().getStart()));
         }
         System.out.println("");
     }
