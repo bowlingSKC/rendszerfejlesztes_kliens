@@ -65,7 +65,7 @@ public class UserController {
                 showMyTickets();
             }
             if( response.toLowerCase().equals("k") ) {
-                discounts();
+                discounts(Main.getLoggedUser());
                 showMyTickets();
             }
         } catch (IOException e) {
@@ -145,8 +145,8 @@ public class UserController {
         //Main.setLoggedUser( Main.getUserManager().updateUser(Main.getLoggedUser()));
     }
 
-    public static void discounts(){
-        List<Ticket> tickets = Main.getTicketManager().getTicketByUser(Main.getLoggedUser());
+    public static void discounts(User logged){
+        List<Ticket> tickets = Main.getTicketManager().getTicketByUser(logged);
         try {
             List<Discount> discounts = Main.getTicketManager().getAllDiscount();
             System.out.print("Jegy szama:   ");
@@ -172,7 +172,15 @@ public class UserController {
         } catch (IOException e) {
             e.printStackTrace();
         }
+    }
 
+    public static User updateUser(User user){
+        for(User usr: Main.getUserManager().getAllUser()){
+            if(usr.getId() == user.getId()){
+                return usr;
+            }
+        }
+        return null;
     }
 
 }
