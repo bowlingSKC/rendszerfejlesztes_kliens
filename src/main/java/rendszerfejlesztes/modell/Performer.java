@@ -18,6 +18,10 @@ public class Performer {
         this.description = description;
     }
 
+    public Performer(Integer id) {
+        this.id = id;
+    }
+
     public Integer getId() {
         return id;
     }

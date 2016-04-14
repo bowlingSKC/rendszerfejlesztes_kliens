@@ -149,6 +149,7 @@ public class Main {
         System.out.println("2.\tFelhasznalok listazasa");
         System.out.println("3.\tFelhasznalok kozotti kereses");
         System.out.println("4.\tJegyek kiadasa");
+        System.out.println("5.\tUj esemeny letrehozasa");
         System.out.println("X.\tKijelentkezes");
         System.out.println("0.\tKilepes");
     }
@@ -166,6 +167,9 @@ public class Main {
                 break;
             case "4":
                 TicketController.handOutTicket();
+                break;
+            case "5":
+                EventController.createNewEvent();
                 break;
             case "x":
                 UserController.logout();

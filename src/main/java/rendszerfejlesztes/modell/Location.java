@@ -21,6 +21,10 @@ public class Location {
         this.longitude = longitude;
     }
 
+    public Location(Integer id) {
+        this.id = id;
+    }
+
     public String getName() {
         return name;
     }

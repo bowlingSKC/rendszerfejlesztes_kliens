@@ -58,4 +58,32 @@ public class EventManagerImpl extends BaseManager implements EventManager {
 
         return event;
     }
+
+    @Override
+    public List<Performer> getAllPerformer() {
+        WebTarget webTarget = getClient().target( getBaseTargetUrl() ).path("event").path("performers");
+        GenericType<List<Performer>> wrapper = new GenericType<List<Performer>>() {};
+        List<Performer> performers = webTarget.request().get(wrapper);
+        return performers;
+    }
+
+    @Override
+    public Performer createNewPerformer(Performer performer) {
+        WebTarget webTarget = getClient().target( getBaseTargetUrl() ).path("event").path("performers");
+
+        Invocation.Builder invocationBuilder = webTarget.request(MediaType.APPLICATION_JSON);
+        Response response = invocationBuilder.post(Entity.entity(performer, MediaType.APPLICATION_JSON));
+        Performer created = response.readEntity(Performer.class);
+        return created;
+    }
+
+    @Override
+    public Event createNewEvent(Event newEvent) {
+        WebTarget webTarget = getClient().target( getBaseTargetUrl() ).path("event");
+
+        Invocation.Builder invocationBuilder = webTarget.request(MediaType.APPLICATION_JSON);
+        Response response = invocationBuilder.put(Entity.entity(newEvent, MediaType.APPLICATION_JSON));
+        Event created = response.readEntity(Event.class);
+        return created;
+    }
 }

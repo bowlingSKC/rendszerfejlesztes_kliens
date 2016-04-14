@@ -1,9 +1,6 @@
 package rendszerfejlesztes.service;
 
-import rendszerfejlesztes.modell.Event;
-import rendszerfejlesztes.modell.Location;
-import rendszerfejlesztes.modell.Sector;
-import rendszerfejlesztes.modell.Subscription;
+import rendszerfejlesztes.modell.*;
 
 import java.util.List;
 
@@ -16,4 +13,8 @@ public interface EventManager {
     Event getEventBySector(Sector sector);
     Event getEventBySubscription(Subscription subscription);
 
+    List<Performer> getAllPerformer();
+    Performer createNewPerformer(Performer performer);
+
+    Event createNewEvent(Event newEvent);
 }

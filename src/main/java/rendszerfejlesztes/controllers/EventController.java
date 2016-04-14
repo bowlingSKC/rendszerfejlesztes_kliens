@@ -6,6 +6,10 @@ import rendszerfejlesztes.Util;
 import rendszerfejlesztes.modell.*;
 
 import java.io.IOException;
+import java.text.DateFormat;
+import java.text.ParseException;
+import java.text.SimpleDateFormat;
+import java.util.ArrayList;
 import java.util.Date;
 import java.util.List;
 
@@ -144,6 +148,104 @@ public class EventController {
             }
         }
 
+    }
+
+    public static void createNewEvent() {
+        try {
+            Event newEvent = new Event();
+
+            System.out.println("Uj esemeny letrehozasa");
+            System.out.print("\tEsemeny neve:     ");
+            newEvent.setName( Util.readStringFromCmd() );
+            System.out.print("\tEsmeny idopontja: ");
+            DateFormat dateFormat = new SimpleDateFormat("MM.dd. hh:mm");
+            String date = Util.readStringFromCmd();
+            newEvent.setStart( dateFormat.parse(date) );
+            System.out.print("\tEsemeny hossza:   ");
+            newEvent.setDuration( Util.readIntFromCmd() );
+            System.out.print("\tEsemney leirasa:  ");
+            newEvent.setDescription( Util.readStringFromCmd() );
+            System.out.print("\tAllohelyes? [i]   ");
+            String seat = Util.readStringFromCmd();
+            newEvent.setSeats(true);
+            if( seat.toLowerCase().equals("n") ) {
+                newEvent.setSeats(false);
+            }
+
+            // előadók
+            System.out.println("\tEloadok:          ");
+            List<Performer> performers = Main.getEventManager().getAllPerformer();
+            for(int i = 0; i < performers.size(); i++) {
+                System.out.println("\t\t" + (i+1) + " - " + performers.get(i).getName());
+            }
+            System.out.println("Uj eloado eseten a sorszam mezobe X-et irjon!");
+            System.out.print("\tEloado sorszama:  ");
+            String performerNum = Util.readStringFromCmd();
+            if( performerNum.toLowerCase().equals("x") ) {
+                // létrehozzuk
+                createPerformer();
+
+                // megint kilistázzuk
+                System.out.println("\tEloadok:          ");
+                performers = Main.getEventManager().getAllPerformer();
+                for(int i = 0; i < performers.size(); i++) {
+                    System.out.println("\t\t" + (i+1) + " - " + performers.get(i).getName());
+                }
+                System.out.println("\tUj eloado eseten a sorszam mezobe X-et irjon!");
+                System.out.print("\tEloado sorszama:  ");
+                newEvent.setPerformer(new Performer( Util.readIntFromCmd() ));
+            } else {
+                newEvent.setPerformer(new Performer( performers.get(Integer.valueOf(performerNum)-1).getId() ));
+            }
+
+            // helyszínek
+            List<Location> locations = Main.getEventManager().getAllLocations();
+            System.out.println("\tHelszinek:");
+            for(int i = 0; i < locations.size(); i++) {
+                System.out.println("\t\t" + (i+1) + " - " + locations.get(i).getName());
+            }
+            System.out.println("\tHelyszin szama: ");
+            newEvent.setLocation(new Location( locations.get(Util.readIntFromCmd()-1).getId() ));
+
+            // szektorok
+            System.out.print("\tHany szektort kivan hozzaadni?  ");
+            int numOfSector = Util.readIntFromCmd();
+            List<Sector> sectors = new ArrayList<>();
+            for(int i = 0; i < numOfSector; i++) {
+                Sector sector = new Sector();
+                sector.setDepth(i+1);
+                System.out.print( (i+1) + ". szektor jegyara: " );
+                sector.setPrice( Util.readIntFromCmd() );
+                System.out.print("Oszlopok szama: ");
+                sector.setNumOfCols( Util.readIntFromCmd() );
+                System.out.print("Sorok szama: ");
+                sector.setNumOfRows( Util.readIntFromCmd() );
+
+                sectors.add(sector);
+            }
+            newEvent.setSectorList(sectors);
+
+            Main.getEventManager().createNewEvent(newEvent);
+        } catch (IOException ex) {
+            ex.printStackTrace();
+        } catch (ParseException e) {
+            e.printStackTrace();
+        }
+
+    }
+
+    public static void createPerformer() {
+        try {
+            Performer performer = new Performer();
+            System.out.println("Eloado neve:    ");
+            performer.setName( Util.readStringFromCmd() );
+            System.out.println("Eloado leirasa: ");
+            performer.setDescription( Util.readStringFromCmd() );
+
+            Main.getEventManager().createNewPerformer(performer);
+        } catch (IOException ex) {
+            ex.printStackTrace();
+        }
     }
 
 }
