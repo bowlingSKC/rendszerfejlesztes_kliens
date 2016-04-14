@@ -50,7 +50,7 @@ public class EventManagerImpl extends BaseManager implements EventManager {
 
     @Override
     public Event getEventBySubscription(Subscription subscription){
-        WebTarget webTarget  = getClient().target(getBaseTargetUrl()).path("event").path("bysubscription").path(subscription.getId().toString());
+        WebTarget webTarget  = getClient().target(getBaseTargetUrl()).path("subscribe").path("bysubscription").path(subscription.getId().toString());
 
         //Invocation.Builder invocationBuilder = webTarget.request(MediaType.APPLICATION_JSON_TYPE);
         Response response = webTarget.request().get();

@@ -68,23 +68,44 @@ public class EventController {
         System.out.println("Befejezes:      " + Constants.DATE_FORMAT.format(Util.addMinsToDate(event.getStart(), event.getDuration())));
         System.out.println("Leiras:");
         System.out.println(event.getDescription());
-        System.out.println("\n(F)oglalas\t(K)ovetes\t(V)issza");
+        if(Main.getLoggedUser() != null){
+            System.out.println("\n(F)oglalas\t(K)ovetes\t(V)issza");
 
-        try {
-            String action = Util.readStringFromCmd().toLowerCase();
-            if(action.equals("f")) {
-                bookEvent(event);
+            try {
+                String action = Util.readStringFromCmd().toLowerCase();
+                if(action.equals("f")) {
+                    bookEvent(event);
+                }
+                if(action.equals("k")) {
+                    if(Main.getSubscribeManager().isSubscribed(event, Main.getLoggedUser())){
+                        System.out.println("HIBA: Mar fel van iratkozva a kovetkezo esemenyre: " + event.getName() + " - " +
+                                Constants.DATE_FORMAT.format(event.getStart()));
+                    }else {
+                        subscribe(event);
+                        System.out.println("Feliratkozas sikeres!\n");
+                    }
+                }
+            } catch (IOException e) {
+                e.printStackTrace();
             }
-            if(action.equals("k")) {
-                subscribe(event);
+        }else{
+            System.out.println("\n(V)issza");
+            try {
+                String action = Util.readStringFromCmd().toLowerCase();
+            } catch (IOException e) {
+                e.printStackTrace();
             }
-        } catch (IOException e) {
-            e.printStackTrace();
         }
+
     }
 
     public static void subscribe(Event event){
-        Main.getSubscribeManager().subscribe(event);
+        Subscription sub = Main.getSubscribeManager().subscribe(event);
+        if(sub == null){
+            System.out.println("Feliratkozas sikertelen!");
+        }else{
+            System.out.println("Feliratkozas sikeres: " + sub.toString());
+        }
     }
 
     public static void bookEvent(Event event) throws IOException {
@@ -126,6 +147,9 @@ public class EventController {
                     Ticket db = Main.getTicketManager().bookTicket(ticket);
                     if( db != null ) {
                         System.out.println("Sikeresen lefoglalta a jegyet!");
+                        if(!Main.getSubscribeManager().isSubscribed(event, Main.getLoggedUser())){
+                            subscribe(event);
+                        }
                         Main.getLoggedUser().getTickets().add(db);
                     }
                 }
@@ -142,6 +166,9 @@ public class EventController {
                 Ticket db = Main.getTicketManager().bookTicket(ticket);
                 if( db != null ) {
                     System.out.println("Sikeresen lefoglalta a jegyet!");
+                    if(!Main.getSubscribeManager().isSubscribed(event, Main.getLoggedUser())){
+                        subscribe(event);
+                    }
                     Main.getLoggedUser().getTickets().add(db);
                 }
 

@@ -17,8 +17,8 @@ public class SubscribeManagerImpl extends BaseManager implements SubscribeManage
 
     @Override
     public Subscription subscribe(Event event){
-        MultivaluedMap<Event,User> params = new MultivaluedHashMap<Event,User>();
-        params.add(event, Main.getLoggedUser());
+        //MultivaluedMap<Event,User> params = new MultivaluedHashMap<Event,User>();
+        //params.add(event, Main.getLoggedUser());
 
 
         WebTarget webTarget = getClient().target(getBaseTargetUrl()).path("subscribe").path("subscribe").path(event.getId().toString());
@@ -27,7 +27,6 @@ public class SubscribeManagerImpl extends BaseManager implements SubscribeManage
         Subscription sub = new Subscription();
         sub.setEvent(event);
         sub.setUser(Main.getLoggedUser());
-        System.out.println("Before send: " + sub.toString());
         Response response = invocationBuilder.post(Entity.entity(Main.getLoggedUser(), MediaType.APPLICATION_JSON_TYPE));
         Subscription subscription = response.readEntity(Subscription.class);
 
@@ -41,5 +40,28 @@ public class SubscribeManagerImpl extends BaseManager implements SubscribeManage
         GenericType<List<Subscription>> wrapper = new GenericType<List<Subscription>>() {};
         List<Subscription> subscriptions = response.readEntity(wrapper);
         return subscriptions;
+    }
+
+    @Override
+    public boolean unSubscribe(Subscription subscription){
+        subscription.setUser(Main.getLoggedUser());
+        WebTarget webTarget = getClient().target(getBaseTargetUrl()).path("subscribe").path("unsubscribe");
+        Invocation.Builder invocationBuilder = webTarget.request(MediaType.APPLICATION_JSON_TYPE);
+        Response response = invocationBuilder.post(Entity.entity(subscription, MediaType.APPLICATION_JSON));
+        if( response.getStatus() != 200 ) {
+            return false;
+        }
+        return true;
+    }
+
+    @Override
+    public boolean isSubscribed(Event event, User user){
+        WebTarget webTarget = getClient().target(getBaseTargetUrl()).path("subscribe").path("issubscribed").path(user.getId().toString());
+        Invocation.Builder invocationBuilder = webTarget.request(MediaType.APPLICATION_JSON_TYPE);
+        Response response = invocationBuilder.post(Entity.entity(event, MediaType.APPLICATION_JSON));
+        if( response.getStatus() != 200 ) {
+            return false;
+        }
+        return true;
     }
 }
