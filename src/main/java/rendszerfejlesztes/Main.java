@@ -91,7 +91,8 @@ public class Main {
     private void printGuestMenu() {
         System.out.println("1.\tProgramok kozotti kereses");
         System.out.println("2.\tBejelentkezes");
-        System.out.println("3.\tKilepes");
+        System.out.println("3.\tRegisztracio");
+        System.out.println("4.\tKilepes");
     }
 
     private void handleGusetBrowser(String selected) {
@@ -103,6 +104,9 @@ public class Main {
                 UserController.login();
                 break;
             case "3":
+                UserController.register();
+                break;
+            case "4":
                 printByeMessage();
                 break;
             default:
@@ -150,6 +154,8 @@ public class Main {
         System.out.println("3.\tFelhasznalok kozotti kereses");
         System.out.println("4.\tJegyek kiadasa");
         System.out.println("5.\tUj esemeny letrehozasa");
+        System.out.println("6.\tEloadok szerkesztese");
+        System.out.println("7.\tHelszinek modositasa");
         System.out.println("X.\tKijelentkezes");
         System.out.println("0.\tKilepes");
     }
@@ -170,6 +176,12 @@ public class Main {
                 break;
             case "5":
                 EventController.createNewEvent();
+                break;
+            case "6":
+                EventController.updatePerformer();
+                break;
+            case "7":
+                EventController.updateLocation();
                 break;
             case "x":
                 UserController.logout();

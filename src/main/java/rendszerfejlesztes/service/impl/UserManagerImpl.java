@@ -19,8 +19,12 @@ public class UserManagerImpl extends BaseManager implements UserManager {
 
         Invocation.Builder invocationBuilder = webTarget.request(MediaType.APPLICATION_JSON_TYPE);
         Response response = invocationBuilder.put(Entity.entity(user, MediaType.APPLICATION_JSON));
-        User created = response.readEntity(User.class);
 
+        if( response.getStatus() != 200 ) {
+            throw new RuntimeException("Problema lepett fel a regisztracio soran!" + response.getStatus());
+        }
+
+        User created = response.readEntity(User.class);
         return created;
     }
 

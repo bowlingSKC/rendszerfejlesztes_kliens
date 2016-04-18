@@ -14,6 +14,33 @@ import java.util.List;
 
 public class UserController {
 
+    public static void register() {
+        User newUser = new User();
+
+        try {
+            System.out.print("\tNev:      ");
+            newUser.setName(Util.readStringFromCmd());
+
+            System.out.print("\tE-mail:   ");
+            String mail = Util.readStringFromCmd();
+            Util.isValidEmail(mail);
+            newUser.setEmail(mail);
+
+            System.out.print("\tJelszo:   ");
+            newUser.setPassword(Util.hashPassword(Util.readStringFromCmd()));
+            newUser.setPrivilage(Constants.USER_PRIVILAGE_ID);
+
+            User registred = Main.getUserManager().create(newUser);
+            if (registred == null) {
+                System.out.println("A megadott E-mail cim mar regisztalva van!");
+            }
+        } catch (RuntimeException ex){
+            System.out.println(ex.getMessage());
+        } catch (Exception ex) {
+            ex.printStackTrace();
+        }
+    }
+
     public static void login() {
         try {
             System.out.print("E-mail cim:   ");

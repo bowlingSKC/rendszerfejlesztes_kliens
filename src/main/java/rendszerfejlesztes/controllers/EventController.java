@@ -11,6 +11,7 @@ import java.text.ParseException;
 import java.text.SimpleDateFormat;
 import java.util.ArrayList;
 import java.util.Date;
+import java.util.DoubleSummaryStatistics;
 import java.util.List;
 
 public class EventController {
@@ -273,6 +274,83 @@ public class EventController {
         } catch (IOException ex) {
             ex.printStackTrace();
         }
+    }
+
+    public static void updatePerformer() {
+        List<Performer> performers = Main.getEventManager().getAllPerformer();
+        for(int i = 0; i < performers.size(); i++) {
+            System.out.println("\t" + (i+1) + ". " + performers.get(i).getName());
+        }
+        System.out.print("Modositani kivant eloado sorszama: ");
+        try {
+            int nth = Util.readIntFromCmd();
+            Performer selected = performers.get( nth - 1 );
+
+            System.out.print("Eloado neve: ["+ selected.getName() +"] ");
+            String newName = Util.readStringFromCmd();
+            if( !newName.equals("") ) {
+                selected.setName( newName );
+            }
+
+            System.out.print("Eloado leirasa: ["+ selected.getDescription() +"] ");
+            String newDesc = Util.readStringFromCmd();
+            if( !newDesc.equals("") ) {
+                selected.setDescription( newDesc );
+            }
+
+            Performer updated = Main.getEventManager().updatePerformer(selected);
+            if( updated == null ) {
+                System.out.println("Nem sikerult a modositas!");
+            }
+        } catch (Exception ex) {
+            System.out.println("Rossz bemenetet adtal meg!");
+        }
+    }
+
+    public static void updateLocation() {
+        List<Location> locations = Main.getEventManager().getAllLocations();
+        for(int i = 0; i < locations.size(); i++) {
+            System.out.println("\t" + (i+1) + ". " + locations.get(i).getName());
+        }
+        System.out.print("Valasztott helyszin: ");
+        try {
+            int nth = Util.readIntFromCmd();
+            Location selected = locations.get(nth-1);
+
+            System.out.print("Nev: ["+ selected.getName() +"] ");
+            String newName = Util.readStringFromCmd();
+            if( !newName.equals("") ) {
+                selected.setName(newName);
+            }
+
+            System.out.print("Cim: ["+ selected.getAddress() +"] ");
+            String newAddress = Util.readStringFromCmd();
+            if( !newAddress.equals("") ) {
+                selected.setAddress( newAddress );
+            }
+
+            System.out.print("GPS hosszusagi fok: ["+ selected.getLongitude() +"] ");
+            String newLong = Util.readStringFromCmd();
+            if( !newLong.equals("") ) {
+                Double d = Double.valueOf( newLong );
+                selected.setLongitude(d);
+            }
+
+            System.out.print("GPS szelessegi fok: ["+ selected.getLatitude() +"] ");
+            String newLat = Util.readStringFromCmd();
+            if( !newLat.equals("") ) {
+                Double d = Double.valueOf( newLat );
+                selected.setLatitude(d);
+            }
+
+            Location updated = Main.getEventManager().updateLocation(selected);
+            if( updated == null ) {
+                System.out.println("Nem siekerult a modositas!");
+            }
+        } catch (Exception ex) {
+            System.out.println("Rossz bemenetet adtal meg!");
+        }
+
     }
 
 }

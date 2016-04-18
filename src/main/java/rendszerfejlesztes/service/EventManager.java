@@ -17,4 +17,8 @@ public interface EventManager {
     Performer createNewPerformer(Performer performer);
 
     Event createNewEvent(Event newEvent);
+
+    Performer updatePerformer(Performer performer);
+
+    Location updateLocation(Location location);
 }

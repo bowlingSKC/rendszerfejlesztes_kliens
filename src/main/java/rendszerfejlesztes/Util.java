@@ -8,8 +8,16 @@ import java.math.BigInteger;
 import java.security.MessageDigest;
 import java.util.Calendar;
 import java.util.Date;
+import java.util.regex.Matcher;
+import java.util.regex.Pattern;
 
 public class Util {
+
+    private static final String EMAIL_PATTERN =
+            "^[_A-Za-z0-9-\\+]+(\\.[_A-Za-z0-9-]+)*@"
+                    + "[A-Za-z0-9-]+(\\.[A-Za-z0-9]+)*(\\.[A-Za-z]{2,})$";
+    private static Pattern pattern = Pattern.compile(EMAIL_PATTERN);;
+    private static Matcher matcher;
 
     public static String readStringFromCmd() throws IOException {
         BufferedReader br = new BufferedReader(new InputStreamReader(System.in));
@@ -41,4 +49,10 @@ public class Util {
         return bigInt.toString(16);
     }
 
+    public static void isValidEmail(String mail) {
+        matcher = pattern.matcher(mail);
+        if( !matcher.matches() ) {
+            throw new RuntimeException("Helytelen E-mail cim formatumot adott meg!");
+        }
+    }
 }
